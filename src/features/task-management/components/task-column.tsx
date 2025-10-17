@@ -31,7 +31,7 @@ const TaskColumn: React.FC<TaskColumnProps> = (props) => {
       ref={dropRef}
       className={clsx(
         "p-3 rounded-lg transition-all duration-300",
-        isOver ? "bg-primary-300" : "bg-primary-100"
+        isOver ? "bg-muted" : "bg-background"
       )}
     >
       <h3 className="text-lg w-[250px] font-semibold text-support-100 p-2 rounded-md flex items-center gap-3 transition-all duration-300">

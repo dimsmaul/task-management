@@ -22,7 +22,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = (props) => {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 ">
+      <div className="grid grid-cols-2 gap-4 ">
         {data?.map((item, i) => (
           <Preview title={item.label} key={i}>
             {item.value}
@@ -35,7 +35,6 @@ const TaskDetails: React.FC<TaskDetailsProps> = (props) => {
           onClick={() => props.openEditTask(props.taskId)}
         >
           <Pencil />
-          {/* <Icon path={mdiPencil} size={1} /> */}
           Edit
         </Button>
         <Button
@@ -44,7 +43,6 @@ const TaskDetails: React.FC<TaskDetailsProps> = (props) => {
           onClick={() => props.openDeleteTask(props.taskId)}
         >
           <Trash />
-          {/* <Icon path={mdiDelete} size={1} /> */}
           Delete
         </Button>
       </div>

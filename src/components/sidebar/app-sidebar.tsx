@@ -1,5 +1,5 @@
 import * as React from "react";
-import { KanbanSquare, Pin, SquareKanban } from "lucide-react";
+import { Kanban, Pin, SquareKanban } from "lucide-react";
 
 import {
   Sidebar,
@@ -18,7 +18,7 @@ const data = {
     {
       name: "Task Management",
       url: "/task-management",
-      icon: KanbanSquare,
+      icon: Kanban,
     },
     {
       name: "Status",

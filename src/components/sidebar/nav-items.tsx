@@ -6,7 +6,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export function NavProjects({
   projects,
@@ -17,11 +18,18 @@ export function NavProjects({
     icon: LucideIcon;
   }[];
 }) {
+  const location = useLocation();
   return (
     <SidebarGroup className="">
       <SidebarMenu>
         {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
+          <SidebarMenuItem
+            key={item.name}
+            className={cn(
+              location.pathname?.split("/")[1] === item.url?.split("/")[1] &&
+                "bg-foreground/20 rounded-md"
+            )}
+          >
             <SidebarMenuButton asChild>
               <Link to={item.url}>
                 <item.icon />

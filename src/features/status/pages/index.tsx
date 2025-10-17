@@ -3,7 +3,7 @@ import { useStatus } from "../hooks/useStatus";
 import StatusAction from "./action";
 import { Button } from "@/components/ui/button";
 import Preview from "@/components/preview/preview";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 
 const StatusList = () => {
   const { list, handleDelete } = useStatus();
@@ -27,6 +27,7 @@ const StatusList = () => {
             setStatusAction({ open: true, type: "create" });
           }}
         >
+          <Plus />
           Add Status
         </Button>
       </div>
@@ -52,31 +53,29 @@ const StatusList = () => {
                   </div>
                 }
               />
-              <Preview title={"Action"}>
-                <div className="flex flex-row items-center gap-2">
-                  <Button
-                    size={"icon"}
-                    onClick={() => {
-                      setStatusAction({
-                        open: true,
-                        type: "edit",
-                        statusId: item.id,
-                      });
-                    }}
-                  >
-                    <Edit />
-                  </Button>
-                  <Button
-                    size={"icon"}
-                    onClick={() => {
-                      handleDelete(item.id);
-                    }}
-                    variant={"destructive"}
-                  >
-                    <Trash />
-                  </Button>
-                </div>
-              </Preview>
+              <div className="flex flex-row items-center gap-2">
+                <Button
+                  size={"icon"}
+                  onClick={() => {
+                    setStatusAction({
+                      open: true,
+                      type: "edit",
+                      statusId: item.id,
+                    });
+                  }}
+                >
+                  <Edit />
+                </Button>
+                <Button
+                  size={"icon"}
+                  onClick={() => {
+                    handleDelete(item.id);
+                  }}
+                  variant={"destructive"}
+                >
+                  <Trash />
+                </Button>
+              </div>
             </div>
           );
         })}

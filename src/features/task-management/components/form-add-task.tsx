@@ -18,20 +18,41 @@ import {
 import { Button } from "@/components/ui/button";
 import Loaders from "@/components/loading/loaders";
 import { useAddTaskManagement } from "../hooks/useAddTaskManagement";
+import { DatePicker } from "@/components/date-picker";
 
 export interface FormAddTaskProps {
   handleSubmitted: () => void;
   handleClose: () => void;
+  id?: string; // <--- Tambahkan ini
 }
 
 const FormAddTask: React.FC<FormAddTaskProps> = ({
   handleSubmitted,
   handleClose,
+  id,
 }) => {
-  const { createTask, masterStatus, form, onSubmit } = useAddTaskManagement({
+  const {
+    createTask,
+    editTask,
+    masterStatus,
+    form,
+    onSubmit,
+    isLoadingDetail,
+  } = useAddTaskManagement({
     handleClose,
     handleSubmitted,
+    id,
   });
+
+  if (isLoadingDetail) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loaders size={2} />
+      </div>
+    );
+  }
+
+  const isPending = createTask.isPending || editTask.isPending;
 
   return (
     <Form {...form}>
@@ -39,7 +60,6 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-5 mt-2"
       >
-        {/* Name */}
         <FormField
           control={form.control}
           name="name"
@@ -54,7 +74,6 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
           )}
         />
 
-        {/* Description */}
         <FormField
           control={form.control}
           name="description"
@@ -69,7 +88,6 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
           )}
         />
 
-        {/* Target Date */}
         <FormField
           control={form.control}
           name="targetDate"
@@ -77,14 +95,17 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
             <FormItem>
               <FormLabel>Target Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  placeholder="input target date"
+                  date={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* Actual Date */}
         <FormField
           control={form.control}
           name="actualDate"
@@ -92,14 +113,17 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
             <FormItem>
               <FormLabel>Actual Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <DatePicker
+                  placeholder="input actual date"
+                  date={field.value}
+                  onChange={field.onChange}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* Status */}
         <FormField
           control={form.control}
           name="taskStatusId"
@@ -110,6 +134,7 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
+                  value={field.value}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Status" />
@@ -128,42 +153,15 @@ const FormAddTask: React.FC<FormAddTaskProps> = ({
           )}
         />
 
-        {/* Priority (opsional, tinggal aktifkan jika dibutuhkan) */}
-        {/* <FormField
-          control={form.control}
-          name="taskPriorityId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Priority</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {(masterPriority?.data || []).map((item: any) => (
-                      <SelectItem key={item.id} value={item.id}>
-                        {item.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
-
         <div className="flex justify-end mt-4">
-          <Button
-            className="btn-primary"
-            type="submit"
-            disabled={createTask.isPending}
-          >
-            {createTask.isPending ? <Loaders size={1} /> : "Save"}
+          <Button className="btn-primary" type="submit" disabled={isPending}>
+            {isPending ? (
+              <Loaders size={1} />
+            ) : id ? (
+              "Update Task"
+            ) : (
+              "Create Task"
+            )}
           </Button>
         </div>
       </form>

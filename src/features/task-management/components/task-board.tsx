@@ -11,9 +11,9 @@ export interface TaskBoardProps {
 
 const TaskBoard: React.FC<TaskBoardProps> = (props) => {
   return (
-    <div>
+    <div className="w-fit overflow-x-auto">
       <DndProvider backend={HTML5Backend}>
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row">
           {props.taskStatuses?.map((status) => (
             <TaskColumn
               key={status.id}

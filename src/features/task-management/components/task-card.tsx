@@ -23,8 +23,8 @@ const TaskCard: React.FC<TaskCardProps> = (props) => {
   return (
     <div
       ref={dragRef}
-      className={`p-3 flex flex-col gap-2 bg-primary-100 rounded-lg border border-support-100/30 cursor-grab transition-all duration-300 ${
-        isDragging ? "opacity-50" : "opacity-100"
+      className={`p-3 flex flex-col gap-2 bg-primary-100 rounded-lg border border-border cursor-grab transition-all duration-300 ${
+        isDragging ? "bg-muted" : "opacity-100"
       }`}
       onClick={() => {
         if (props.onClick) {

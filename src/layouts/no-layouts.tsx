@@ -1,4 +1,5 @@
-import ThemeToggleButton from "@/features/theme/components/theme-toggle";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { Button } from "@/components/ui/button";
 import React from "react";
 import { Outlet } from "react-router-dom";
 
@@ -9,7 +10,9 @@ const NoLayouts: React.FC = () => {
         <Outlet />
       </div>
       <div className="absolute bottom-5 right-5">
-        <ThemeToggleButton />
+        <Button variant={"outline"} size={"icon"}>
+          <AnimatedThemeToggler />
+        </Button>
       </div>
     </div>
   );

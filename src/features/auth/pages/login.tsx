@@ -1,89 +1,85 @@
-import TextInput from "@/components/input/text-input";
-import { Form, Formik, FormikValues } from "formik";
 import React from "react";
-import { useLogin } from "../hooks/useLogin";
-import Icon from "@mdi/react";
-import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
-import { LoginValidationSchema } from "../validation/login-validation";
-import Loaders from "@/components/loading/loaders";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useSignIn } from "../hooks/useLogin";
+import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
-const LoginPages = () => {
-  const { initialValues, handleSubmit } = useLogin();
-  const [showPassword, setShowPassword] = React.useState(false);
+const SignInPages: React.FC = () => {
+  const { form, handleSignIn } = useSignIn();
+
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
-      <div className="md:w-[30vw] sm:w-[50vw] w-[90vw] border-[1px] rounded-xl border-support-200/30 bg-primary-100 text-support-100 p-5 ">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={(values: FormikValues) => {
-            handleSubmit.mutateAsync({
-              email: values.email,
-              password: values.password,
-            });
-          }}
-          validationSchema={LoginValidationSchema}
-        >
-          {() => (
-            <Form>
-              <div className="flex flex-col gap-7">
-                <div className="flex items-center justify-between">
-                  <h1 className="text-3xl font-semibold">Login</h1>
+    <div className="w-screen h-screen overflow-hidden flex items-center justify-center">
+      <Card className="w-[450px]">
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit((val) =>
+                handleSignIn.mutateAsync(val)
+              )}
+              className="space-y-6"
+            >
+              <h1 className="text-4xl font-semibold">Sign In</h1>
+              {form.formState.errors.root && (
+                <div className="text-red-500 text-sm">
+                  {form.formState.errors.root.message}
                 </div>
-                <div className="flex flex-col gap-5">
-                  <TextInput
-                    type={"email"}
-                    name="email"
-                    placeholder="Input Email"
-                  />
-
-                  <TextInput
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Input Password"
-                    suffix={
-                      <button
-                        type="button"
-                        className="cursor-pointer flex items-center justify-center"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        <Icon
-                          path={showPassword ? mdiEyeOffOutline : mdiEyeOutline}
-                          size={1}
-                          color={"var(--color-support-100)"}
-                        />
-                      </button>
-                    }
-                  />
-
-                  <div>
-                    {!handleSubmit.isPending ? (
-                      <button className="btn-primary w-full">Login</button>
-                    ) : (
-                      <div className="btn-primary w-full cursor-not-allowed">
-                        <Loaders size={1} />
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-center text-sm">
-                      Don't have an account?{" "}
-                      <Link
-                        to="/register"
-                        className="text-support-100 underline"
-                      >
-                        Register
-                      </Link>
-                    </p>
-                  </div>
-                </div>
+              )}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="input email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="input password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" type="submit">
+                Sign In
+              </Button>
+              <div>
+                <p className="text-center text-sm">
+                  Don't have an account?{" "}
+                  <Link to="/register" className="text-support-100 underline">
+                    Sign Up
+                  </Link>
+                </p>
               </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
 
-export default LoginPages;
+export default SignInPages;

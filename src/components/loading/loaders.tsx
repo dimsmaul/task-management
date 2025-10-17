@@ -1,6 +1,5 @@
-import { mdiLoading } from "@mdi/js";
-import Icon from "@mdi/react";
 import clsx from "clsx";
+import { LoaderCircle } from "lucide-react";
 import React from "react";
 
 export interface LoadersType {
@@ -40,7 +39,8 @@ const Loaders: React.FC<LoadersType> = (props) => {
           : ""
       )}
     >
-      <Icon path={mdiLoading} size={props.size || 2} className="animate-spin" />
+      <LoaderCircle className="animate-spin size-10" />
+      {/* <Icon path={mdiLoading} size={props.size || 2} className="animate-spin" /> */}
     </div>
   );
 };

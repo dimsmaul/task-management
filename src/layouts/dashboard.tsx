@@ -1,10 +1,7 @@
 import { useDashboardRouter } from "@/features/users/hooks/useDashboardRouter";
-import { useSidebarHandler } from "@/features/users/hooks/useSidebarHandler";
-import Icon from "@mdi/react";
-import clsx from "clsx";
+// import { useSidebarHandler } from "@/features/users/hooks/useSidebarHandler";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import Drawer from "@/components/drawer/drawer";
+import { Outlet } from "react-router-dom";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
@@ -14,6 +11,7 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -22,16 +20,17 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
+import { cn } from "@/lib/utils";
 
 const DashboardLayouts: React.FC = () => {
-  const { route, generateBreadcrumbs } = useDashboardRouter();
-  const { sidebar, toggleSidebar } = useSidebarHandler();
+  const { generateBreadcrumbs } = useDashboardRouter();
+  // const { sidebar, toggleSidebar } = useSidebarHandler();
   const { logout } = useLogout();
-  const { pathname } = window.location;
+  // const { pathname } = window.location;
 
   return (
     <SidebarProvider>
-      <div className="flex flex-row h-screen w-screen bg-primary-100 transition-all duration-300">
+      <div className="flex flex-row h-screen w-screen overflow-hidden bg-primary-100 transition-all duration-300">
         {/* Sidebar */}
         <AppSidebar />
 
@@ -70,63 +69,34 @@ const DashboardLayouts: React.FC = () => {
             </div>
           </header>
 
-          {/* Content */}
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <Wrapper>
             <Outlet />
-          </div>
-          {/* <div className="overflow-y-auto h-[92vh] p-3 text-support-100">
-            <Outlet />
-          </div> */}
-          {/* </div> */}
+          </Wrapper>
         </SidebarInset>
       </div>
-      {/* <div className="md:hidden">
-        <Drawer
-          isOpen={sidebar === "full"}
-          onClose={() => {
-            toggleSidebar();
-          }}
-          placement="left"
-          className="md:hidden "
-        >
-          <div className="mt-10">
-            <div className="flex flex-col gap-2">
-              {route.map((item) => (
-                <Link
-                  key={item.name}
-                  className={clsx(
-                    "w-full text-start transition-all duration-300 flex items-center  rounded-md p-2",
-                    pathname === item.path
-                      ? "text-primary-100 bg-support-100"
-                      : "text-support-100 hover:bg-support-200 hover:text-primary-100",
-                    sidebar === "hide"
-                      ? "justify-center"
-                      : "justify-start gap-2"
-                  )}
-                  to={item.path}
-                  onClick={() => {
-                    toggleSidebar();
-                  }}
-                >
-                  <Icon path={item.icon} size={1} />
-                  <p
-                    className={clsx(
-                      "whitespace-nowrap overflow-hidden ",
-                      sidebar === "hide"
-                        ? "!w-0 opacity-0"
-                        : "w-auto opacity-100"
-                    )}
-                  >
-                    {item.name}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </Drawer>
-      </div> */}
     </SidebarProvider>
   );
 };
 
 export default DashboardLayouts;
+
+export interface IWrapper {
+  children?: React.ReactNode;
+}
+
+const Wrapper: React.FC<IWrapper> = ({ children }) => {
+  const { open } = useSidebar();
+
+  return (
+    <div
+      className={cn(
+        "p-4 overflow-y-auto transition-all duration-300 ease-in-out ",
+        open
+          ? "w-[calc(100vw-var(--sidebar-width))]"
+          : "w-[calc(100vw-var(--sidebar-width-icon))]"
+      )}
+    >
+      <div className="">{children}</div>
+    </div>
+  );
+};

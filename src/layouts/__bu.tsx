@@ -4,8 +4,7 @@ import { mdiChevronRight } from "@mdi/js";
 import Icon from "@mdi/react";
 import clsx from "clsx";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import Drawer from "@/components/drawer/drawer";
+import { Outlet } from "react-router-dom";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Button } from "@/components/ui/button";
@@ -14,10 +13,10 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
 const DashboardLayouts: React.FC = () => {
-  const { route, generateBreadcrumbs } = useDashboardRouter();
+  const { generateBreadcrumbs } = useDashboardRouter();
   const { sidebar, toggleSidebar } = useSidebarHandler();
   const { logout } = useLogout();
-  const { pathname } = window.location;
+  // const { pathname } = window.location;
 
   return (
     <SidebarProvider>
@@ -112,7 +111,7 @@ const DashboardLayouts: React.FC = () => {
         </div>
       </div>
       <div className="md:hidden">
-        <Drawer
+        {/* <Drawer
           isOpen={sidebar === "full"}
           onClose={() => {
             toggleSidebar();
@@ -154,7 +153,7 @@ const DashboardLayouts: React.FC = () => {
               ))}
             </div>
           </div>
-        </Drawer>
+        </Drawer> */}
       </div>
     </SidebarProvider>
   );
